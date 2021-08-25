@@ -40,7 +40,7 @@ sRight = s[config.nbx:,:]
 
 
 ################# Define and compile model ###############################
-deep_diffusion = dnn_model(50)
+deep_diffusion = dnn_model(config.nn)
 #################################################################
 
 if train_mode:

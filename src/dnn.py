@@ -2,6 +2,7 @@ from tensorflow import keras
 from keras import layers
 from sklearn.model_selection import train_test_split
 from os.path import join as pjoin
+import config
 
 def dnn_model(nn):
     # Build model
@@ -25,9 +26,9 @@ def train_dnn(deep_diffusion,inputs_array,outputs_array,savedir):
     Xs_train, Xs_dev, ys_train, ys_dev = train_test_split(Xs_train, ys_train, test_size=dev_ratio, shuffle=True)
 
     # Fit!
-    history = deep_diffusion.fit(Xs_train, ys_train, epochs=20, batch_size=32,
+    history = deep_diffusion.fit(Xs_train, ys_train, epochs=config.epochs, batch_size=config.batch_size,
                 validation_data=(Xs_dev, ys_dev),
-                callbacks=keras.callbacks.EarlyStopping(patience=5))
+                callbacks=keras.callbacks.EarlyStopping(patience=config.patience))
 
     deep_diffusion.summary()
     deep_diffusion.save(pjoin(savedir),overwrite=True,include_optimizer=True,save_format=None)

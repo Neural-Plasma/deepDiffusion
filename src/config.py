@@ -1,16 +1,27 @@
 import numpy as np
+import ini
+
+params = ini.parse(open('input.ini').read())
 ####### Parameters #######
-# plate size, mm
-w = 10.
-h = 10.
+# box size, mm
+w = float(params['grid']['w'])
+h = float(params['grid']['h'])
 # intervals in x-, y- directions, mm
-dx = 0.1
-dy = 0.1
+dx = float(params['grid']['dx'])
+dy = float(params['grid']['dy'])
 # Thermal diffusivity of steel, mm2.s-1
-D = 1.
+D = float(params['par']['D'])
+
+# Number of timesteps
+nsteps = int(params['time']['nsteps'])
+dnn_start = int(params['time']['dnn_start'])
+
+nn = int(params['dnn']['nn'])
+epochs = int(params['dnn']['epochs'])
+patience = int(params['dnn']['patience'])
+batch_size=int(params['dnn']['batch_size'])
 
 nx, ny = int(w/dx), int(h/dy)
-
 nbx = int(nx/2)
 
 slice = int(ny/2)
@@ -21,8 +32,3 @@ x = np.linspace(0,w,nx)
 y = np.linspace(0,h,ny)
 
 dt = dx2 * dy2 / (2 * D * (dx2 + dy2))
-
-# Number of timesteps
-nsteps = 101
-
-dnn_start = 50

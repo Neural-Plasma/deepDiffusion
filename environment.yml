@@ -10,9 +10,9 @@ dependencies:
   - sklearn
   - argparse
   - matplotlib
-  # - pip:
+  - pip:
+    - ini-parser
   #   - pyevtk
-  #   - ini-parser
   #   - matplotlib
   #   - h5py
   #   - numba

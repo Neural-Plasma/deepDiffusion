@@ -2,24 +2,27 @@ import numpy as np
 from os.path import join as pjoin
 import os.path
 import argparse
+import matplotlib.pyplot as plt
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 from tensorflow import keras
 
 
-from diffusion import diffusion_left, diffusion_right, train_data, test_model
+from diffusion import diffusion_left, diffusion_right, train_data, test_model, test_bench
 import config
 from dnn import dnn_model,train_dnn
-from plot_data import model_history, plot_solution
+from plot_data import model_history, plot_solution_2D, plot_solution_1D
 
 parser = argparse.ArgumentParser(description='DNN Based Diffusion Eqn Solver')
 parser.add_argument('-te','--test', action='store_true', help='Add this if you want to test the model')
-parser.add_argument('-tr','--train', action='store_true', help='Add this if you want to test the model')
+parser.add_argument('-tr','--train', action='store_true', help='Add this if you want to train the model')
+parser.add_argument('-be','--bench', action='store_true', help='Add this if you want to benchmark the model')
 
 args        = parser.parse_args()
 test_mode = args.test
 train_mode = args.train
+bench_mode = args.bench
 
 savedir = pjoin("data",'dnn_model')
 
@@ -55,4 +58,18 @@ if test_mode:
     uall = test_model(sLeft,sRight,u0L,u0R,u, deep_diffusion)
     keras.backend.clear_session()
 
-    plot_solution(X,Y,uall)
+    plot_solution_2D(X,Y,uall)
+    plot_solution_1D(config.x,uall[:,config.slice,:])
+    plt.show()
+
+if bench_mode:
+    print('Running benchmark mode')
+    uall_bench = test_bench(sLeft,sRight,u0L,u0R,u, deep_diffusion)
+
+    deep_diffusion = keras.models.load_model(pjoin(savedir))
+    uall_pred = test_model(sLeft,sRight,u0L,u0R,u, deep_diffusion)
+    keras.backend.clear_session()
+
+    plot_solution_2D(X,Y,(uall_bench-uall_pred))
+    plot_solution_1D(config.x,(uall_bench[:,config.slice,:]-uall_pred[:,config.slice,:]))
+    plt.show()

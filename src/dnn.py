@@ -30,5 +30,5 @@ def train_dnn(deep_diffusion,inputs_array,outputs_array,savedir):
                 callbacks=keras.callbacks.EarlyStopping(patience=5))
 
     deep_diffusion.summary()
-    deep_diffusion.save(pjoin(savedir))
+    deep_diffusion.save(pjoin(savedir),overwrite=True,include_optimizer=True,save_format=None)
     return deep_diffusion,history

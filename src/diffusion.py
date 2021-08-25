@@ -60,7 +60,7 @@ def test_model(sLeft,sRight,u0L,u0R,u, deep_diffusion):
     uall = []
     for m in range(config.nsteps):
         uL = diffusion_left(u0L, u0R[0,:], sLeft)
-        if m>=50:
+        if m>=config.dnn_start:
             inputs = []
             for j in range(1, config.ny-1):
                 inputs.append([u0L[config.nbx-1,j],sRight[0,j]])
@@ -77,6 +77,20 @@ def test_model(sLeft,sRight,u0L,u0R,u, deep_diffusion):
             # keras.backend.clear_session()
         else:
             uR = diffusion_right(u0R, u0L[config.nbx-1,:], sRight)
+
+        u0L = uL.copy()
+        u0R = uR.copy()
+        u[1:config.nbx,:]  = uL[1:,:]
+        u[config.nbx:-1,:] = uR[:-1,:]
+        if (m%25==0):
+            uall.append(u.copy().T)
+    return np.array(uall)
+
+def test_bench(sLeft,sRight,u0L,u0R,u, deep_diffusion):
+    uall = []
+    for m in range(config.nsteps):
+        uL = diffusion_left(u0L, u0R[0,:], sLeft)
+        uR = diffusion_right(u0R, u0L[config.nbx-1,:], sRight)
 
         u0L = uL.copy()
         u0R = uR.copy()

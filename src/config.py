@@ -13,6 +13,8 @@ nx, ny = int(w/dx), int(h/dy)
 
 nbx = int(nx/2)
 
+slice = int(ny/2)
+
 dx2, dy2 = dx*dx, dy*dy
 
 x = np.linspace(0,w,nx)
@@ -22,3 +24,5 @@ dt = dx2 * dy2 / (2 * D * (dx2 + dy2))
 
 # Number of timesteps
 nsteps = 101
+
+dnn_start = 50

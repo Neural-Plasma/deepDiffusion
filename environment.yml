@@ -1,0 +1,20 @@
+name: deepDiffusion
+channels:
+  - default
+dependencies:
+  - python>=3.8
+  - pip
+  - numpy>=1.20.2
+  - tensorflow
+  - keras
+  - sklearn
+  - argparse
+  - matplotlib
+  # - pip:
+  #   - pyevtk
+  #   - ini-parser
+  #   - matplotlib
+  #   - h5py
+  #   - numba
+  #   - argparse
+  #   - scipy

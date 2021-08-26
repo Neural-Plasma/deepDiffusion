@@ -57,10 +57,10 @@ if test_mode:
     deep_diffusion = keras.models.load_model(pjoin(savedir))
     uall = test_model(sLeft,sRight,u0L,u0R,u, deep_diffusion)
     keras.backend.clear_session()
-
-    plot_solution_2D(X,Y,uall)
-    plot_solution_1D(config.x,uall[:,config.slice,:])
-    plt.show()
+    if config.plot_fig:
+        plot_solution_2D(X,Y,uall)
+        plot_solution_1D(config.x,uall[:,config.slice,:])
+        plt.show()
 
 if bench_mode:
     print('Running benchmark mode')
@@ -69,7 +69,7 @@ if bench_mode:
     deep_diffusion = keras.models.load_model(pjoin(savedir))
     uall_pred = test_model(sLeft,sRight,u0L,u0R,u, deep_diffusion)
     keras.backend.clear_session()
-
-    plot_solution_2D(X,Y,(uall_bench-uall_pred))
-    plot_solution_1D(config.x,(uall_bench[:,config.slice,:]-uall_pred[:,config.slice,:]))
-    plt.show()
+    if config.plot_fig:
+        plot_solution_2D(X,Y,(uall_bench-uall_pred))
+        plot_solution_1D(config.x,(uall_bench[:,config.slice,:]-uall_pred[:,config.slice,:]))
+        plt.show()

@@ -21,6 +21,9 @@ epochs = int(params['dnn']['epochs'])
 patience = int(params['dnn']['patience'])
 batch_size=int(params['dnn']['batch_size'])
 
+plot_fig=bool(params['figures']['plot_fig'])
+use_latex=bool(params['figures']['use_latex'])
+
 nx, ny = int(w/dx), int(h/dy)
 nbx = int(nx/2)
 

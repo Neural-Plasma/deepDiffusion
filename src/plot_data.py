@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from os.path import join as pjoin
 import matplotlib as mp
+import config
 
 def model_history(history):
     plt.figure()
@@ -17,7 +18,7 @@ def plot_solution_2D(X,Y,uall):
     dpi = 300
     ppi = np.sqrt(1920**2+1200**2)/24
 
-    mp.rc('text', usetex=True)
+    mp.rc('text', usetex=config.use_latex)
     mp.rc('font', family='sans-serif', size=14, serif='Computer Modern Roman')
     mp.rc('axes', titlesize=14)
     mp.rc('axes', labelsize=14)
@@ -47,7 +48,7 @@ def plot_solution_1D(x1D,u1D):
     dpi = 300
     ppi = np.sqrt(1920**2+1200**2)/24
 
-    mp.rc('text', usetex=True)
+    mp.rc('text', usetex=config.use_latex)
     mp.rc('font', family='sans-serif', size=14, serif='Computer Modern Roman')
     mp.rc('axes', titlesize=14)
     mp.rc('axes', labelsize=14)

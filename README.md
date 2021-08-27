@@ -7,9 +7,9 @@ cd deepDiffusion
 ```
 ### To train the model
 ```
-python src/main.py --train
+python deepDiff --train
 ```
 ### To test the model
 ```
-python src/main.py --test
+python deepDiff --test
 ```

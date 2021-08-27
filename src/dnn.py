@@ -9,14 +9,14 @@ def dnn_model(nn):
     # preprocessing = layers.experimental.preprocessing
     deep_diffusion = keras.models.Sequential()
     deep_diffusion.add(layers.Dense(nn, input_dim=2, activation='elu'))
-    deep_diffusion.add(layers.Dense(nn, activation='elu'))
-    deep_diffusion.add(layers.Dense(nn, activation='elu'))
+    for n in range(config.nlayer):
+        deep_diffusion.add(layers.Dense(nn, activation='elu'))
     # deep_diffusion.add(layers.experimental.preprocessing.RandomRotation(factor = 0.2))
     # deep_diffusion.add(layers.experimental.preprocessing.RandomWidth(factor = 0.2))
     # deep_diffusion.add(layers.experimental.preprocessing.RandomHeight(factor = 0.2))
     # deep_diffusion.add(layers.experimental.preprocessing.RandomZoom(factor = 0.2))
     # deep_diffusion.add(layers.experimental.preprocessing.RandomFlip(mode='horizontal'))
-    deep_diffusion.add(layers.Dense(nn, activation='elu'))
+
     deep_diffusion.add(layers.Dense(1, activation='linear'))
 
     # Compile model

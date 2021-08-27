@@ -20,6 +20,7 @@ nn = int(params['dnn']['nn'])
 epochs = int(params['dnn']['epochs'])
 patience = int(params['dnn']['patience'])
 batch_size=int(params['dnn']['batch_size'])
+nlayer = int(params['dnn']['nlayer'])
 
 plot_fig=bool(params['figures']['plot_fig'])
 use_latex=bool(params['figures']['use_latex'])

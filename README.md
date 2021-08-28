@@ -1,4 +1,6 @@
 # deepDiffusion
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Neural-Plasma/deepDiffusion/HEAD)
+
 A Deep Neural Network-based diffusion equation solver using TensorFlow.
 
 ## Contributors

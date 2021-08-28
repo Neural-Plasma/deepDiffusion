@@ -2,8 +2,10 @@ name: Python Package using Conda on macOS
 
 on: [push]
 
+permissions: read-all|write-all
+
 jobs:
-  build-linux:
+  build-osx:
     runs-on: macos-latest
     strategy:
       max-parallel: 5

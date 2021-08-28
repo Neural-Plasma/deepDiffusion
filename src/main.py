@@ -31,7 +31,7 @@ wflow_mode = args.wflow
 if wflow_mode:
     config.plot_fig = False
     config.nn = 10
-    config.epochs = 10
+    config.epochs = 2
     config.patience = 5
     config.batch_size=64
     config.nlayer = 2
@@ -59,7 +59,8 @@ if train_mode:
     print('Running train mode')
     inputs_array,outputs_array = train_data(sLeft,sRight,u0L,u0R,u)
     deep_diffusion,history = train_dnn(deep_diffusion,inputs_array,outputs_array,savedir)
-    model_history(history)
+    if config.plot_fig:
+        model_history(history)
     keras.backend.clear_session()
 
 

@@ -20,7 +20,7 @@ def model_history(history):
     axs.semilogy(history.history['loss'][1:], '.-', lw=2)
     axs.semilogy(history.history['val_loss'][1:], '.-', lw=2)
     axs.set_xlabel('Epochs')
-    axs.set_ylabel('Loss')
+    axs.set_ylabel('L1 loss')
     axs.legend(['training loss', 'validation loss'])
     plt.savefig(pjoin('data','train_history.png'),dpi=dpi)
     plt.show()

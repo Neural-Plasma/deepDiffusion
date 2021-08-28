@@ -1,5 +1,5 @@
 # deepDiffusion
-[![Python Package using Conda](https://github.com/Neural-Plasma/deepDiffusion/actions/workflows/python-conda-test.yml/badge.svg)](https://github.com/Neural-Plasma/deepDiffusion/actions/workflows/python-conda-test.yml)
+[![Python Package using Conda on Linux](https://github.com/Neural-Plasma/deepDiffusion/actions/workflows/python-conda-test-linux.yml/badge.svg)](https://github.com/Neural-Plasma/deepDiffusion/actions/workflows/python-conda-test-linux.yml)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Neural-Plasma/deepDiffusion/HEAD)
 
 A Deep Neural Network-based diffusion equation solver using TensorFlow.

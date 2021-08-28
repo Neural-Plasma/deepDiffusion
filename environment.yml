@@ -7,11 +7,11 @@ dependencies:
   - numpy>=1.20.2
   - tensorflow
   - keras
-  - sklearn
-  - argparse
+  - scikit-learn
   - matplotlib
   - pip:
     - ini-parser
+    - argparse
   #   - pyevtk
   #   - matplotlib
   #   - h5py

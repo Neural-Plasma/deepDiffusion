@@ -19,11 +19,22 @@ parser = argparse.ArgumentParser(description='DNN Based Diffusion Eqn Solver')
 parser.add_argument('-te','--test', action='store_true', help='Add this if you want to test the model')
 parser.add_argument('-tr','--train', action='store_true', help='Add this if you want to train the model')
 parser.add_argument('-be','--bench', action='store_true', help='Add this if you want to benchmark the model')
+parser.add_argument('-wl','--wflow', action='store_true', help='workflow mode')
 
 args        = parser.parse_args()
 test_mode = args.test
 train_mode = args.train
 bench_mode = args.bench
+wflow_mode = args.wflow
+
+
+if wflow_mode:
+    config.plot_fig = False
+    config.nn = 10
+    config.epochs = 10
+    config.patience = 5
+    config.batch_size=64
+    config.nlayer = 2
 
 savedir = pjoin("data",'dnn_model')
 

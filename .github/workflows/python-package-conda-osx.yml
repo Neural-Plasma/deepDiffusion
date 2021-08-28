@@ -2,7 +2,7 @@ name: Python Package using Conda on macOS
 
 on: [push]
 
-permissions: read-all|write-all
+permissions: write-all
 
 jobs:
   build-osx:

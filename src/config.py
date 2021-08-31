@@ -1,11 +1,14 @@
 import numpy as np
 import ini
+import diagn
+import h5py
+from os.path import join as pjoin
 
 params = ini.parse(open('input.ini').read())
 ####### Parameters #######
 # box size, mm
-w = float(params['grid']['w'])
-h = float(params['grid']['h'])
+lx = float(params['grid']['lx'])
+ly = float(params['grid']['ly'])
 # intervals in x-, y- directions, mm
 dx = float(params['grid']['dx'])
 dy = float(params['grid']['dy'])
@@ -26,14 +29,22 @@ plot_fig=bool(params['figures']['plot_fig'])
 use_latex=bool(params['figures']['use_latex'])
 add_labels=bool(params['figures']['add_labels'])
 
-nx, ny = int(w/dx), int(h/dy)
-nbx = int(nx/2)
 
+dumpData = bool(params['diagnostics']['dumpData'])
+vtkData  = bool(params['diagnostics']['vtkData'])
+
+nx, ny = int(lx/dx), int(ly/dy)
+
+if dumpData:
+    f = h5py.File(pjoin("data","data.hdf5"),"w")
+    diagn.attributes(f,lx,ly,nx,ny,nsteps)
+
+nbx = int(nx/2)
 slice = int(ny/2)
 
 dx2, dy2 = dx*dx, dy*dy
 
-x = np.linspace(0,w,nx)
-y = np.linspace(0,h,ny)
+x = np.linspace(0,lx,nx)
+y = np.linspace(0,ly,ny)
 
 dt = dx2 * dy2 / (2 * D * (dx2 + dy2))

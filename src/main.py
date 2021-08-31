@@ -45,7 +45,7 @@ u0L, u0R, uL, uR, sLeft, sRight = \
 X,Y = np.meshgrid(config.x,config.y)
 
 ##### Source ########
-s = np.exp(-((X-config.w/2)**2+(Y-config.h/2)**2))
+s = np.exp(-((X-config.lx/2)**2+(Y-config.ly/2)**2))
 sLeft = s[:config.nbx,:]
 sRight = s[config.nbx:,:]
 
@@ -74,6 +74,10 @@ if test_mode:
         plot_solution_2D(X,Y,uall)
         plot_solution_1D(config.x,uall[:,config.slice,:])
         plt.show()
+    if config.vtkData:
+        from vtk_data import vtkwrite
+        print('Writing VTK files for Paraview visualization ...')
+        vtkwrite('data')
 
 if bench_mode:
     print('Running benchmark mode')
@@ -82,6 +86,7 @@ if bench_mode:
     deep_diffusion = keras.models.load_model(pjoin(savedir))
     uall_pred = test_model(sLeft,sRight,u0L,u0R,u, deep_diffusion)
     keras.backend.clear_session()
+    print(np.max(abs(uall_bench-uall_pred)))
     if config.plot_fig:
         plot_solution_2D(X,Y,(uall_bench-uall_pred))
         plot_solution_1D(config.x,(uall_bench[:,config.slice,:]-uall_pred[:,config.slice,:]))

@@ -1,5 +1,7 @@
 import numpy as np
 import config
+import h5py
+import diagn
 
 def diffusion_left(u0, u0Rs, sLeft):
     u = np.zeros(u0.shape)
@@ -82,6 +84,8 @@ def test_model(sLeft,sRight,u0L,u0R,u, deep_diffusion):
         u0R = uR.copy()
         u[1:config.nbx,:]  = uL[1:,:]
         u[config.nbx:-1,:] = uR[:-1,:]
+        if config.dumpData:
+            diagn.dataxy(config.f,m,u.copy().T)
         if (m%25==0):
             uall.append(u.copy().T)
     return np.array(uall)

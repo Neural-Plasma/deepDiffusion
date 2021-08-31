@@ -12,9 +12,8 @@ dependencies:
   - pip:
     - ini-parser
     - argparse
-  #   - pyevtk
-  #   - matplotlib
-  #   - h5py
+    - pyevtk
+    - h5py
   #   - numba
   #   - argparse
   #   - scipy

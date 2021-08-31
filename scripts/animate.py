@@ -46,25 +46,35 @@ x = np.linspace(0, lx, nx, dtype='float64')
 y = np.linspace(0, ly, ny, dtype='float64')
 X, Y = np.meshgrid(x, y)
 
-# PX, PY = np.meshgrid(np.ones(nx)*(lx/2), np.linspace(0, ly, ny, dtype='float64'))
-# Z = PY
+maxP = np.max(h5["%d"%nsteps]);
+minP = np.min(h5["%d"%nsteps]);
+
+# yy, zz = np.meshgrid(range(2), range(2))
+# xx = yy*0
+PY, PZ = np.meshgrid(np.linspace(0, ly, ny, dtype='float64'), np.linspace(minP, maxP, ny, dtype='float64'))
+PX = (x[int(nx/2)-10])*np.ones(PY.shape)
 
 # dataset index
 # data_num = np.arange(start=0, stop=Nt, step=dp, dtype=int)
 
-maxP = np.max(h5["%d"%nsteps]);
-minP = np.min(h5["%d"%nsteps]);
+
 
 if (show_anim == True):
     def animate(i):
         #======Potential Data=========
         data = h5["%d"%i]
-        data = np.transpose(data)
+        # data = np.transpose(data)
 
         ax1.cla()
         if Vis3D == True:
-            img1 = ax1.plot_surface(X,Y,data, rstride=2, cstride=2, cmap=cm.hot)
-            # ax1.plot_surface(PX,PY,Z)
+            if i>=50:
+                # ax1.plot_surface(PX,PY,PZ,alpha=1,cmap=cm.viridis)
+                ax1.text(0.85*lx, 0.5*ly,  0.85*maxP,'ML', color = 'black',fontsize = 14)
+            else:
+                ax1.text(0.85*lx, 0.5*ly,  0.85*maxP,'FD', color = 'black',fontsize = 14)
+            img1 = ax1.plot_surface(X,Y,data, cmap=cm.hot)
+            ax1.text(0.05*lx, 0.5*ly,  0.85*maxP,'FD', color = 'black',fontsize = 14)
+
             ax1.set_zlim([minP, maxP])
         else:
             img1 = ax1.contourf(X,Y,data)
@@ -95,7 +105,7 @@ if (show_anim == True):
     div = make_axes_locatable(ax1)
     cax = div.append_axes('right', '4%', '4%')
     data = h5["0"]
-    data = np.transpose(data)
+    # data = np.transpose(data)
     if Vis3D == True:
         fig = plt.figure(figsize=figsize/25.4,constrained_layout=True,dpi=ppi)
         ax1 = plt.axes(projection ="3d")

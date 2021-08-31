@@ -31,7 +31,7 @@ add_labels=bool(params['figures']['add_labels'])
 
 
 dumpData = bool(params['diagnostics']['dumpData'])
-vtkData  = bool(params['diagnostics']['vtkData'])
+# vtkData  = bool(params['diagnostics']['vtkData'])
 
 nx, ny = int(lx/dx), int(ly/dy)
 

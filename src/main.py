@@ -74,10 +74,10 @@ if test_mode:
         plot_solution_2D(X,Y,uall)
         plot_solution_1D(config.x,uall[:,config.slice,:])
         plt.show()
-    if config.vtkData:
-        from vtk_data import vtkwrite
-        print('Writing VTK files for Paraview visualization ...')
-        vtkwrite('data')
+    # if config.vtkData:
+    #     from vtk_data import vtkwrite
+    #     print('Writing VTK files for Paraview visualization ...')
+    #     vtkwrite('data')
 
 if bench_mode:
     print('Running benchmark mode')

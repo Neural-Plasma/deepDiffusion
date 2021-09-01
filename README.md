@@ -86,6 +86,9 @@ nlayer = 6
 plot_fig = True
 use_latex = True
 add_labels = True
+
+[diagnostics]
+dumpData = True
 ```
 
 ## Contributing

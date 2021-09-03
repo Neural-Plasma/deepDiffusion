@@ -5,6 +5,8 @@
 
 A Deep Neural Network-based diffusion equation solver using TensorFlow.
 
+![deep diffusion](deep_diff.gif)
+
 ## Contributors
 - [Sayan Adhikari](https://github.com/sayanadhikari), UiO, Norway. [@sayanadhikari](https://twitter.com/sayanadhikari)
 - [Rupak Mukherjee](https://github.com/RupakMukherjee), PPPL, USA.

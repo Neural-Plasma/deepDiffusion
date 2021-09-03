@@ -72,7 +72,7 @@ if (show_anim == True):
                 ax1.text(0.85*lx, 0.5*ly,  0.85*maxP,'ML', color = 'black',fontsize = 14)
             else:
                 ax1.text(0.85*lx, 0.5*ly,  0.85*maxP,'FD', color = 'black',fontsize = 14)
-            img1 = ax1.plot_surface(X,Y,data, cmap=cm.hot)
+            img1 = ax1.plot_surface(X,Y,data, rstride=2, cstride=2, cmap=cm.hot)
             ax1.text(0.05*lx, 0.5*ly,  0.85*maxP,'FD', color = 'black',fontsize = 14)
 
             ax1.set_zlim([minP, maxP])

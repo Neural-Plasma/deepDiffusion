@@ -4,6 +4,7 @@ from os.path import join as pjoin
 import os.path
 import argparse
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
@@ -39,25 +40,44 @@ if wflow_mode:
 savedir = pjoin("data",'dnn_model')
 
 ##### Initialization ########
-u = np.zeros((config.nx, config.ny))
-u0L, u0R, uL, uR, sLeft, sRight = \
-[np.zeros((config.nbx, config.ny)) for _ in range(6)]
-X,Y = np.meshgrid(config.x,config.y)
+# u = np.zeros((config.nx, config.ny))
+u0L, uL, sLeft = \
+[np.zeros((config.nbx, config.ny)) for _ in range(3)]
+
+u0R, uR, sRight = \
+[np.zeros((2*config.nbx, 2*config.ny)) for _ in range(3)]
+X1,Y1 = np.meshgrid(config.x,config.y)
+X2,Y2 = np.meshgrid(config.xd,config.yd)
+
 
 ##### Source ########
-s = np.exp(-((X-config.lx/2)**2+(Y-config.ly/2)**2))
-sLeft = s[:config.nbx,:]
-sRight = s[config.nbx:,:]
+s1 = np.exp(-((X1-config.lx/2)**2+(Y1-config.ly/2)**2))
+s2 = np.exp(-((X2-config.lx/2)**2+(Y2-config.ly/2)**2))
+sLeft = s1[:config.nbx,:]
+sRight = s2[2*config.nbx:,:]
 
-
-
+# fig = plt.figure()
+# ax1 = plt.axes(projection ="3d")
+# ax1.plot_surface(X1[:config.nbx,:],Y1[:config.nbx,:],sLeft, rstride=2, cstride=2, cmap=cm.hot)
+# ax1.plot_surface(X2[2*config.nbx:,:],Y2[2*config.nbx:,:],sRight, rstride=2, cstride=2, cmap=cm.hot)
+# plt.show()
+# exit()
 ################# Define and compile model ###############################
 deep_diffusion = dnn_model(config.nn)
 #################################################################
 
 if train_mode:
     print('Running train mode')
-    inputs_array,outputs_array = train_data(sLeft,sRight,u0L,u0R,u)
+    inputs_array,outputs_array,u1,u2 = train_data(sLeft,sRight,u0L,u0R)
+    print(u1.shape,u2.shape)
+    fig = plt.figure()
+    ax1 = plt.axes(projection ="3d")
+    ax1.plot_surface(X1[:config.nbx,:],Y1[:config.nbx,:],u1[0,:,:], rstride=2, cstride=2, cmap=cm.hot)
+    ax1.plot_surface(X2[2*config.nbx:,:],Y2[2*config.nbx:,:],u2[0,:,:], rstride=2, cstride=2, cmap=cm.hot)
+    plt.show()
+    # exit()
+
+    exit()
     deep_diffusion,history = train_dnn(deep_diffusion,inputs_array,outputs_array,savedir)
     if config.plot_fig:
         model_history(history)

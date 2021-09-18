@@ -47,4 +47,7 @@ dx2, dy2 = dx*dx, dy*dy
 x = np.linspace(0,lx,nx)
 y = np.linspace(0,ly,ny)
 
+xd = np.linspace(0,lx,2*nx)
+yd = np.linspace(0,ly,2*ny)
+
 dt = dx2 * dy2 / (2 * D * (dx2 + dy2))

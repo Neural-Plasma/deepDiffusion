@@ -27,8 +27,8 @@ def diffusion_right(u0, u0Ls, sRight):
         uyy = (u0[i,j+1] - 2*u0[i,j] + u0[i,j-1]) / config.dy2
         u[i,j] = u0[i,j] + config.dt * config.D * (uxx + uyy) + config.dt * sRight[i,j]
 
-    for i in range(1, config.nbx-2):
-        for j in range(1, config.ny-1):
+    for i in range(1, 2*config.nbx-2):
+        for j in range(1, 2*config.ny-1):
             uxx = (u0[i+1,j] - 2*u0[i,j] + u0[i-1,j]) / config.dx2
             uyy = (u0[i,j+1] - 2*u0[i,j] + u0[i,j-1]) / config.dy2
             u[i,j] = u0[i,j] + config.dt * config.D * (uxx + uyy) + config.dt * sRight[i,j]
@@ -52,8 +52,6 @@ def train_data(sLeft,sRight,u0L,u0R):
         for l in range(1, len(u0R[0,:])-1, 2):
             # print(l)
             u0L_interp[l] = (np.mean([u0L_interp[l],u0L_interp[l+1]]))
-        print(u0R_interp)
-        print(u0L_interp)
         uL = diffusion_left(u0L, u0R_interp, sLeft)
         uR = diffusion_right(u0R, u0L_interp, sRight)
         # for j in range(1, config.ny-1):

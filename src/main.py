@@ -59,7 +59,7 @@ sRight = s2[2*config.nbx:,:]
 # fig = plt.figure()
 # ax1 = plt.axes(projection ="3d")
 # ax1.plot_surface(X1[:config.nbx,:],Y1[:config.nbx,:],sLeft, rstride=2, cstride=2, cmap=cm.hot)
-# ax1.plot_surface(X2[2*config.nbx:,:],Y2[2*config.nbx:,:],sRight, rstride=2, cstride=2, cmap=cm.hot)
+# ax1.plot_surface(X2[2*config.nbx-1:,:],Y2[2*config.nbx-1:,:],sRight, rstride=2, cstride=2, cmap=cm.hot)
 # plt.show()
 # exit()
 ################# Define and compile model ###############################
@@ -69,7 +69,7 @@ deep_diffusion = dnn_model(config.nn)
 if train_mode:
     print('Running train mode')
     inputs_array,outputs_array,u1,u2 = train_data(sLeft,sRight,u0L,u0R)
-    print(u1.shape,u2.shape)
+    # print(u1.shape,u2.shape)
     fig = plt.figure()
     ax1 = plt.axes(projection ="3d")
     ax1.plot_surface(X1[:config.nbx,:],Y1[:config.nbx,:],u1[0,:,:], rstride=2, cstride=2, cmap=cm.hot)

@@ -22,7 +22,7 @@ def diffusion_left(u0, u0Rs, sLeft):
 def diffusion_right(u0, u0Ls, sRight):
     u = np.zeros(u0.shape)
     i = 0
-    for j in range(1, config.ny-1):
+    for j in range(1, 2*config.ny-1):
         uxx = (u0[i+1,j] - 2*u0[i,j] + u0Ls[j]) / config.dx2
         uyy = (u0[i,j+1] - 2*u0[i,j] + u0[i,j-1]) / config.dy2
         u[i,j] = u0[i,j] + config.dt * config.D * (uxx + uyy) + config.dt * sRight[i,j]

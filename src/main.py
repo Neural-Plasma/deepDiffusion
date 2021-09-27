@@ -70,14 +70,14 @@ if train_mode:
     print('Running train mode')
     inputs_array,outputs_array,u1,u2 = train_data(sLeft,sRight,u0L,u0R)
     # print(u1.shape,u2.shape)
-    fig = plt.figure()
-    ax1 = plt.axes(projection ="3d")
-    ax1.plot_surface(X1[:config.nbx,:],Y1[:config.nbx,:],u1[0,:,:], rstride=2, cstride=2, cmap=cm.hot)
-    ax1.plot_surface(X2[2*config.nbx:,:],Y2[2*config.nbx:,:],u2[0,:,:], rstride=2, cstride=2, cmap=cm.hot)
-    plt.show()
+    # fig = plt.figure()
+    # ax1 = plt.axes(projection ="3d")
+    # ax1.plot_surface(X1[:config.nbx,:],Y1[:config.nbx,:],u1[0,:,:], rstride=2, cstride=2, cmap=cm.hot)
+    # ax1.plot_surface(X2[2*config.nbx:,:],Y2[2*config.nbx:,:],u2[0,:,:], rstride=2, cstride=2, cmap=cm.hot)
+    # plt.show()
     # exit()
 
-    exit()
+    # exit()
     deep_diffusion,history = train_dnn(deep_diffusion,inputs_array,outputs_array,savedir)
     if config.plot_fig:
         model_history(history)
@@ -88,11 +88,13 @@ if test_mode:
     print('Running test mode')
     print('Model data exists. loading model...')
     deep_diffusion = keras.models.load_model(pjoin(savedir))
-    uall = test_model(sLeft,sRight,u0L,u0R,u, deep_diffusion)
+    u1,u2 = test_model(sLeft,sRight,u0L,u0R, deep_diffusion)
+    print(X1[:config.nbx,:].shape,Y1[:config.nbx,:].shape,u1[0,:,:].shape,X2[2*config.nbx:,:].shape,u2[0,:,:].shape)
+    # exit()
     keras.backend.clear_session()
     if config.plot_fig:
-        plot_solution_2D(X,Y,uall)
-        plot_solution_1D(config.x,uall[:,config.slice,:])
+        plot_solution_2D(X1[:,:config.nbx],Y1[:,:config.nbx],u1,X2[:,2*config.nbx:],Y2[:,2*config.nbx:],u2)
+        # plot_solution_1D(config.x,uall[:,config.slice,:])
         plt.show()
     # if config.vtkData:
     #     from vtk_data import vtkwrite

@@ -25,7 +25,7 @@ def model_history(history):
     plt.savefig(pjoin('data','train_history.png'),dpi=dpi)
     plt.show()
 
-def plot_solution_2D(X,Y,uall):
+def plot_solution_2D(X1,Y1,u1,X2,Y2,u2):
     figsize = np.array([180,180/1.618])
     dpi = 300
     ppi = np.sqrt(1920**2+1200**2)/24
@@ -38,11 +38,18 @@ def plot_solution_2D(X,Y,uall):
     mp.rc('ytick', labelsize=14)
     mp.rc('legend', fontsize=14)
     fig1, axs = plt.subplots(2,2,figsize=figsize/25.4,constrained_layout=True,dpi=ppi)
-
-    im0 = axs[0,0].contourf(X,Y,uall[1,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(uall), vmax=np.max(uall))
-    im1 = axs[0,1].contourf(X,Y,uall[2,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(uall), vmax=np.max(uall))
-    im2 = axs[1,0].contourf(X,Y,uall[3,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(uall), vmax=np.max(uall))
-    im3 = axs[1,1].contourf(X,Y,uall[4,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(uall), vmax=np.max(uall))
+    u1_min = np.min(u1)
+    u1_max = np.max(u1)
+    u2_min = np.min(u2)
+    u2_max = np.max(u2)
+    axs[0,0].contourf(X1,Y1,u1[0,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u1), vmax=np.max(u1))
+    axs[0,1].contourf(X1,Y1,u1[1,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u1), vmax=np.max(u1))
+    axs[1,0].contourf(X1,Y1,u1[2,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u1), vmax=np.max(u1))
+    axs[1,1].contourf(X1,Y1,u1[3,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u1), vmax=np.max(u1))
+    axs[0,0].contourf(X2,Y2,u2[0,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u2), vmax=np.max(u2))
+    axs[0,1].contourf(X2,Y2,u2[1,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u2), vmax=np.max(u2))
+    axs[1,0].contourf(X2,Y2,u2[2,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u2), vmax=np.max(u2))
+    im3 = axs[1,1].contourf(X2,Y2,u2[3,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u2), vmax=np.max(u2))
 
     if config.add_labels:
         axs[0,0].text(0.05*config.lx, 0.85*config.ly, 'FD', color = 'white',fontsize = 14)

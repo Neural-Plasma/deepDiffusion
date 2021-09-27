@@ -16,6 +16,7 @@ def diffusion_left(u0, u0Rs, sLeft):
         uxx = (u0Rs[j] - 2*u0[i,j] + u0[i-1,j]) / config.dx2
         uyy = (u0[i,j+1] - 2*u0[i,j] + u0[i,j-1]) / config.dy2
         u[i,j] = u0[i,j] + config.dt * config.D * (uxx + uyy) + config.dt * sLeft[i,j]
+        # print(u0Rs[j])
 
     return u
 
@@ -23,14 +24,15 @@ def diffusion_right(u0, u0Ls, sRight):
     u = np.zeros(u0.shape)
     i = 0
     for j in range(1, 2*config.ny-1):
-        uxx = (u0[i+1,j] - 2*u0[i,j] + u0Ls[j]) / config.dx2
-        uyy = (u0[i,j+1] - 2*u0[i,j] + u0[i,j-1]) / config.dy2
+        uxx = (u0[i+1,j] - 2*u0[i,j] + u0Ls[j]) / config.dxh2
+        uyy = (u0[i,j+1] - 2*u0[i,j] + u0[i,j-1]) / config.dyh2
         u[i,j] = u0[i,j] + config.dt * config.D * (uxx + uyy) + config.dt * sRight[i,j]
+        # print(u0Ls[j])
 
     for i in range(1, 2*config.nbx-2):
         for j in range(1, 2*config.ny-1):
-            uxx = (u0[i+1,j] - 2*u0[i,j] + u0[i-1,j]) / config.dx2
-            uyy = (u0[i,j+1] - 2*u0[i,j] + u0[i,j-1]) / config.dy2
+            uxx = (u0[i+1,j] - 2*u0[i,j] + u0[i-1,j]) / config.dxh2
+            uyy = (u0[i,j+1] - 2*u0[i,j] + u0[i,j-1]) / config.dyh2
             u[i,j] = u0[i,j] + config.dt * config.D * (uxx + uyy) + config.dt * sRight[i,j]
 
     return u
@@ -40,19 +42,26 @@ def train_data(sLeft,sRight,u0L,u0R):
     outputs = []
     u1 = []
     u2 = []
+    # print(config.dx2,config.dxh2,config.dy2,config.dyh2)
     for m in range(config.nsteps):
         u0R_interp = []
         for l in range(0, len(u0R[0,:]), 2):
             u0R_interp.append(np.mean([u0R[0,l],u0R[0,l+1]]))
+            # print(u0R[0,l])
         u0R_interp = np.array(u0R_interp)
         u0L_interp = np.zeros(u0R[0,:].shape)
         for l in range(0, len(u0R[0,:]), 2):
-            u0L_interp[l] = u0L[0,int(l/2)]
+            u0L_interp[l] = u0L[config.nbx-1,int(l/2)]
+            # print(u0L[config.nbx-1,int(l/2)])
         for l in range(1, len(u0R[0,:])-1, 2):
-            u0L_interp[l] = (np.mean([u0L_interp[l],u0L_interp[l+1]]))
+            u0L_interp[l] = (np.mean([u0L_interp[l-1],u0L_interp[l+1]]))
+            # print(u0L_interp[l])
 
         uL = diffusion_left(u0L, u0R_interp, sLeft)
         uR = diffusion_right(u0R, u0L_interp, sRight)
+
+        # print(uL.shape, u0L.shape, u0R_interp.shape, sLeft.shape)
+        # print(uR.shape, u0R.shape, u0L_interp.shape, sRight.shape)
 
         for j in range(1, 2*config.ny-1):
             inputs.append([u0L_interp[j],sRight[0,j]])
@@ -64,8 +73,8 @@ def train_data(sLeft,sRight,u0L,u0R):
                 outputs.append([uR[i,j]])
         u0L = uL.copy()
         u0R = uR.copy()
-        u1.append(uL)
-        u2.append(uR)
+        u1.append(uL.T)
+        u2.append(uR.T)
     u1 = np.asarray(u1)
     u2 = np.asarray(u2)
         # u[1:config.nbx,:]  = uL[1:,:]
@@ -86,9 +95,9 @@ def test_model(sLeft,sRight,u0L,u0R, deep_diffusion):
         u0R_interp = np.array(u0R_interp)
         u0L_interp = np.zeros(u0R[0,:].shape)
         for l in range(0, len(u0R[0,:]), 2):
-            u0L_interp[l] = u0L[0,int(l/2)]
+            u0L_interp[l] = u0L[config.nbx-1,int(l/2)]
         for l in range(1, len(u0R[0,:])-1, 2):
-            u0L_interp[l] = (np.mean([u0L_interp[l],u0L_interp[l+1]]))
+            u0L_interp[l] = (np.mean([u0L_interp[l-1],u0L_interp[l+1]]))
 
         uL = diffusion_left(u0L, u0R_interp, sLeft)
         if m>=config.dnn_start:

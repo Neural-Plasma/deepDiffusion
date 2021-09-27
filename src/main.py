@@ -77,6 +77,23 @@ if train_mode:
     # plt.show()
     # exit()
 
+    # print(u1.shape,u2.shape)
+    # u1_min = np.min(u1)
+    # u1_max = np.max(u1)
+    # u2_min = np.min(u2)
+    # u2_max = np.max(u2)
+    # fig1, axs = plt.subplots(2,2,constrained_layout=True,dpi=300)
+    # axs[0,0].contourf(X1[:,:config.nbx],Y1[:,:config.nbx],u1[25,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u1), vmax=np.max(u1))
+    # axs[0,1].contourf(X1[:,:config.nbx],Y1[:,:config.nbx],u1[50,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u1), vmax=np.max(u1))
+    # axs[1,0].contourf(X1[:,:config.nbx],Y1[:,:config.nbx],u1[75,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u1), vmax=np.max(u1))
+    # axs[1,1].contourf(X1[:,:config.nbx],Y1[:,:config.nbx],u1[99,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u1), vmax=np.max(u1))
+    # axs[0,0].contourf(X2[:,2*config.nbx:],Y2[:,2*config.nbx:],u2[25,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u2), vmax=np.max(u2))
+    # axs[0,1].contourf(X2[:,2*config.nbx:],Y2[:,2*config.nbx:],u2[50,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u2), vmax=np.max(u2))
+    # axs[1,0].contourf(X2[:,2*config.nbx:],Y2[:,2*config.nbx:],u2[75,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u2), vmax=np.max(u2))
+    # im3 = axs[1,1].contourf(X2[:,2*config.nbx:],Y2[:,2*config.nbx:],u2[99,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u2), vmax=np.max(u2))
+    # fig1.colorbar(im3, ax=axs.ravel().tolist())
+    # plt.show()
+
     # exit()
     deep_diffusion,history = train_dnn(deep_diffusion,inputs_array,outputs_array,savedir)
     if config.plot_fig:

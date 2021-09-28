@@ -21,12 +21,14 @@ parser.add_argument('-te','--test', action='store_true', help='Add this if you w
 parser.add_argument('-tr','--train', action='store_true', help='Add this if you want to train the model')
 parser.add_argument('-be','--bench', action='store_true', help='Add this if you want to benchmark the model')
 parser.add_argument('-wl','--wflow', action='store_true', help='workflow mode')
+# parser.add_argument('-i','--input', default=None, type=str, help='Name of the input file')
 
 args        = parser.parse_args()
-test_mode = args.test
-train_mode = args.train
-bench_mode = args.bench
-wflow_mode = args.wflow
+test_mode   = args.test
+train_mode  = args.train
+bench_mode  = args.bench
+wflow_mode  = args.wflow
+# inputfile = args.input
 
 
 if wflow_mode:
@@ -38,7 +40,8 @@ if wflow_mode:
     config.nlayer = 2
 
 savedir = pjoin("data",'dnn_model')
-
+# path    = "data/"  # DO NOT CHANGE THE PATH
+os.makedirs(savedir, exist_ok=True)
 ##### Initialization ########
 # u = np.zeros((config.nx, config.ny))
 u0L, uL, sLeft = \
@@ -93,9 +96,10 @@ if train_mode:
     # im3 = axs[1,1].contourf(X2[:,2*config.nbx:],Y2[:,2*config.nbx:],u2[99,:,:], 100,cmap=plt.get_cmap('hot'),vmin=np.min(u2), vmax=np.max(u2))
     # fig1.colorbar(im3, ax=axs.ravel().tolist())
     # plt.show()
-
     # exit()
+
     deep_diffusion,history = train_dnn(deep_diffusion,inputs_array,outputs_array,savedir)
+    np.savez_compressed(pjoin(savedir,'..','train_history.npz'),loss=history.history['loss'][1:],val_loss=history.history['val_loss'][1:])
     if config.plot_fig:
         model_history(history)
     keras.backend.clear_session()
@@ -110,9 +114,9 @@ if test_mode:
     # exit()
     keras.backend.clear_session()
     if config.plot_fig:
-        plot_solution_2D(X1[:,:config.nbx],Y1[:,:config.nbx],u1,X2[:,2*config.nbx:],Y2[:,2*config.nbx:],u2)
-        # plot_solution_1D(config.x,uall[:,config.slice,:])
-        plt.show()
+        plot_solution_2D(X1[:,:config.nbx],Y1[:,:config.nbx],u1,X2[:,2*config.nbx:],Y2[:,2*config.nbx:],u2,'sol')
+        plot_solution_1D(config.x,u1[:,config.slice1,:],config.xd,u2[:,config.slice2,:],'sol')
+        # plt.show()
     # if config.vtkData:
     #     from vtk_data import vtkwrite
     #     print('Writing VTK files for Paraview visualization ...')
@@ -120,13 +124,15 @@ if test_mode:
 
 if bench_mode:
     print('Running benchmark mode')
-    uall_bench = test_bench(sLeft,sRight,u0L,u0R,u, deep_diffusion)
+    u1_bench,u2_bench = test_bench(sLeft,sRight,u0L,u0R)
 
     deep_diffusion = keras.models.load_model(pjoin(savedir))
-    uall_pred = test_model(sLeft,sRight,u0L,u0R,u, deep_diffusion)
+    u1_pred,u2_pred = test_model(sLeft,sRight,u0L,u0R, deep_diffusion)
     keras.backend.clear_session()
-    print(np.max(abs(uall_bench-uall_pred)))
+    print(np.max(abs(u1_bench-u1_pred)))
+    np.savez_compressed(pjoin(savedir,'..','abs_error.npz'),abs_error=np.max(abs(u1_bench-u1_pred)))
     if config.plot_fig:
-        plot_solution_2D(X,Y,(uall_bench-uall_pred))
-        plot_solution_1D(config.x,(uall_bench[:,config.slice,:]-uall_pred[:,config.slice,:]))
-        plt.show()
+        plot_solution_2D(X1[:,:config.nbx],Y1[:,:config.nbx],(u1_bench-u1_pred),X2[:,2*config.nbx:],Y2[:,2*config.nbx:],(u2_bench-u2_pred),'bench')
+        # plot_solution_1D(config.x,(uall_bench[:,config.slice,:]-uall_pred[:,config.slice,:]))
+        plot_solution_1D(config.x,(u1_bench[:,config.slice1,:]-u1_pred[:,config.slice1,:]),config.xd,(u2_bench[:,config.slice1,:]-u2_pred[:,config.slice1,:]),'bench')
+        # plt.show()

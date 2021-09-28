@@ -12,3 +12,5 @@ venv
 .coverage
 **.pyc
 **.egg-info
+**inputs
+**run*

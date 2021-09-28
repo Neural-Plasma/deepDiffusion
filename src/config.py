@@ -3,7 +3,10 @@ import ini
 import diagn
 import h5py
 from os.path import join as pjoin
+import sys
+import os
 
+# params = ini.parse(open(main.inputfile).read())
 params = ini.parse(open('input.ini').read())
 ####### Parameters #######
 # box size, mm
@@ -35,12 +38,15 @@ dumpData = bool(params['diagnostics']['dumpData'])
 
 nx, ny = int(lx/dx), int(ly/dy)
 
+savedir = pjoin("data",'dnn_model')
+os.makedirs(savedir, exist_ok=True)
 if dumpData:
     f = h5py.File(pjoin("data","data.hdf5"),"w")
     diagn.attributes(f,lx,ly,nx,ny,nsteps)
 
 nbx = int(nx/2)
-slice = int(ny/2)
+slice1 = int(ny/2)
+slice2 = int(ny)
 
 dx2, dy2 = dx*dx, dy*dy
 dxh2, dyh2 = dx2/4, dy2/4

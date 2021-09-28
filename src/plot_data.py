@@ -23,9 +23,9 @@ def model_history(history):
     axs.set_ylabel('L1 loss')
     axs.legend(['training loss', 'validation loss'])
     plt.savefig(pjoin('data','train_history.png'),dpi=dpi)
-    plt.show()
+    # plt.show()
 
-def plot_solution_2D(X1,Y1,u1,X2,Y2,u2):
+def plot_solution_2D(X1,Y1,u1,X2,Y2,u2,rtype):
     figsize = np.array([180,180/1.618])
     dpi = 300
     ppi = np.sqrt(1920**2+1200**2)/24
@@ -73,10 +73,10 @@ def plot_solution_2D(X1,Y1,u1,X2,Y2,u2):
     axs[1,0].set_title('t = 75')
     axs[1,1].set_title('t = 100')
     fig1.colorbar(im3, ax=axs.ravel().tolist())
-    plt.savefig(pjoin('data','2d_sol.png'),dpi=dpi)
+    plt.savefig(pjoin('data','2d_'+rtype+'.png'),dpi=dpi)
     # plt.show()
 
-def plot_solution_1D(x1D,u1D):
+def plot_solution_1D(x1D,u11D,xd1D,u21D,rtype):
     figsize = np.array([180,180/1.618])
     dpi = 300
     ppi = np.sqrt(1920**2+1200**2)/24
@@ -90,15 +90,19 @@ def plot_solution_1D(x1D,u1D):
     mp.rc('legend', fontsize=14)
     fig1, axs = plt.subplots(2,2,figsize=figsize/25.4,constrained_layout=True,dpi=ppi)
 
-    axs[0,0].plot(x1D,u1D[1,:],lw=2)
-    axs[0,1].plot(x1D,u1D[2,:],lw=2)
-    axs[1,0].plot(x1D,u1D[3,:],lw=2)
-    axs[1,1].plot(x1D,u1D[4,:],lw=2)
+    axs[0,0].plot(x1D[:config.nbx],u11D[0,:],lw=2)
+    axs[0,1].plot(x1D[:config.nbx],u11D[1,:],lw=2)
+    axs[1,0].plot(x1D[:config.nbx],u11D[2,:],lw=2)
+    axs[1,1].plot(x1D[:config.nbx],u11D[3,:],lw=2)
+    axs[0,0].plot(xd1D[2*config.nbx:],u21D[0,:],lw=2)
+    axs[0,1].plot(xd1D[2*config.nbx:],u21D[1,:],lw=2)
+    axs[1,0].plot(xd1D[2*config.nbx:],u21D[2,:],lw=2)
+    axs[1,1].plot(xd1D[2*config.nbx:],u21D[3,:],lw=2)
 
-    max1 = np.max(u1D[1,:])
-    max2 = np.max(u1D[2,:])
-    max3 = np.max(u1D[3,:])
-    max4 = np.max(u1D[4,:])
+    max1 = np.max(u11D[0,:])
+    max2 = np.max(u11D[1,:])
+    max3 = np.max(u11D[2,:])
+    max4 = np.max(u11D[3,:])
     if config.add_labels:
         axs[0,0].text(0.05*config.lx, 0.85*max1, 'FD', color = 'black',fontsize = 14)
         axs[0,0].text(0.85*config.lx, 0.85*max1, 'FD', color = 'black', fontsize = 14)
@@ -116,4 +120,4 @@ def plot_solution_1D(x1D,u1D):
     axs[0,1].set_title('t = 50')
     axs[1,0].set_title('t = 75')
     axs[1,1].set_title('t = 100')
-    plt.savefig(pjoin('data','1d_sol.png'),dpi=dpi)
+    plt.savefig(pjoin('data','1d_'+rtype+'.png'),dpi=dpi)

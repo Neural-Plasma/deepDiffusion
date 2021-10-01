@@ -51,4 +51,4 @@ axs.set_ylabel('Absolute Error')
 # axs.legend(['training loss', 'validation loss'])
 plt.savefig(pjoin('.','error_abs.png'),dpi=dpi)
 
-plt.show()
+#plt.show()

@@ -17,9 +17,9 @@ for i in run_arr1:
     batch_size = float(params['dnn']['batch_size'])
     batch_size_arr.append(batch_size)
     train_loss = np.load(pjoin(path,"train_history.npz"))['loss']
-    train_loss_bsize.append(train_loss)
+    train_loss_bsize.append(train_loss[-1])
     val_loss = np.load(pjoin(path,"train_history.npz"))['val_loss']
-    val_loss_bsize.append(val_loss)
+    val_loss_bsize.append(val_loss[-1])
 
 
 batch_size_arr = np.array(batch_size_arr)
@@ -39,9 +39,9 @@ for i in run_arr2:
     nlayer = float(params['dnn']['nlayer'])
     nlayer_arr.append(nlayer)
     train_loss = np.load(pjoin(path,"train_history.npz"))['loss']
-    train_loss_nl.append(train_loss)
+    train_loss_nl.append(train_loss[-1])
     val_loss = np.load(pjoin(path,"train_history.npz"))['val_loss']
-    val_loss_nl.append(val_loss)
+    val_loss_nl.append(val_loss[-1])
 
 
 nlayer_arr = np.array(nlayer_arr)
@@ -61,9 +61,9 @@ for i in run_arr3:
     nn = float(params['dnn']['nn'])
     nn_arr.append(nn)
     train_loss = np.load(pjoin(path,"train_history.npz"))['loss']
-    train_loss_nn.append(train_loss)
+    train_loss_nn.append(train_loss[-1])
     val_loss = np.load(pjoin(path,"train_history.npz"))['val_loss']
-    val_loss_nn.append(val_loss)
+    val_loss_nn.append(val_loss[-1])
 
 nn_arr = np.array(nn_arr)
 train_loss_nn = np.array(train_loss_nn)
@@ -112,4 +112,4 @@ axs.set_xlabel('number of nuerons per layer')
 axs.set_ylabel('L1 loss')
 axs.legend(['training loss', 'validation loss'])
 plt.savefig(pjoin('.','nn_loss.png'),dpi=dpi)
-plt.show()
+#plt.show()
